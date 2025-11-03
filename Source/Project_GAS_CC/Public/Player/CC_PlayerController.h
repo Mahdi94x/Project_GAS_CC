@@ -32,9 +32,13 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Crash|Input|Movement")
 	TObjectPtr<UInputAction> LookAction;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Crash|Input|Abilities")
+	TObjectPtr<UInputAction> PrimaryAction;
+
 	void Jump();
 	void StopJumping();
 	void Move (const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
+	void Primary();
 	
 };
