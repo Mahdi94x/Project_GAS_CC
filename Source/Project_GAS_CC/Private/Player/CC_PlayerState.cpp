@@ -1,0 +1,18 @@
+// Copyrights to Mahdi94x based on Course Make exciting multiplayer and single player games with the Gameplay Ability System in UE5 By Stephen Ulibarri
+
+#include "Player/CC_PlayerState.h"
+#include "AbilitySystemComponent.h"
+
+ACC_PlayerState::ACC_PlayerState()
+{
+	SetNetUpdateFrequency(100.f);
+	
+	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>("AbilitySystemComponent");
+	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+}
+
+UAbilitySystemComponent* ACC_PlayerState::GetAbilitySystemComponent() const
+{
+	return this->AbilitySystemComponent;
+}
