@@ -2,6 +2,9 @@
 
 #include "Project_GAS_CC/Public/Characters/CC_BaseCharacter.h"
 
+#include "AbilitySystemComponent.h"
+#include "GameplayAbilitySpec.h"
+
 ACC_BaseCharacter::ACC_BaseCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;
@@ -13,6 +16,17 @@ ACC_BaseCharacter::ACC_BaseCharacter()
 UAbilitySystemComponent* ACC_BaseCharacter::GetAbilitySystemComponent() const
 {
 	return nullptr;
+}
+
+void ACC_BaseCharacter::GiveStartUpAbilities()
+{
+	if (!IsValid(GetAbilitySystemComponent())) return;
+	
+	for (const auto& Ability : StartUpAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Ability);
+		GetAbilitySystemComponent()->GiveAbility(AbilitySpec);
+	}
 }
 
 

@@ -7,6 +7,8 @@
 #include "AbilitySystemInterface.h"
 #include "CC_BaseCharacter.generated.h"
 
+class UGameplayAbility;
+
 UCLASS(Abstract)
 class PROJECT_GAS_CC_API ACC_BaseCharacter : public ACharacter , public IAbilitySystemInterface
 {
@@ -15,5 +17,12 @@ class PROJECT_GAS_CC_API ACC_BaseCharacter : public ACharacter , public IAbility
 public:
 	ACC_BaseCharacter();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
+protected:
+	void GiveStartUpAbilities();
+
+private:
+	UPROPERTY(EditDefaultsOnly, Category = "Crash|Abilities")
+	TArray<TSubclassOf<UGameplayAbility>> StartUpAbilities;
 
 };

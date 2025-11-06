@@ -48,14 +48,18 @@ UAbilitySystemComponent* ACC_PlayerCharacter::GetAbilitySystemComponent() const
 	
 }
 
-void ACC_PlayerCharacter::PossessedBy(AController* NewController) // Client
+void ACC_PlayerCharacter::PossessedBy(AController* NewController) // Server
 {
 	Super::PossessedBy(NewController);
-	if (!IsValid(GetAbilitySystemComponent())) return;
+	
+	if (!IsValid(GetAbilitySystemComponent()) || !HasAuthority()) return;
+	
 	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
+	GiveStartUpAbilities();
+	
 }
 
-void ACC_PlayerCharacter::OnRep_PlayerState() // Server
+void ACC_PlayerCharacter::OnRep_PlayerState() // Client (Local)
 {
 	Super::OnRep_PlayerState();
 	if (!IsValid(GetAbilitySystemComponent())) return;
