@@ -9,7 +9,8 @@ public class Project_GAS_CCTarget : TargetRules
 	{
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V5;
-		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_6;
+		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_7;
+		BuildEnvironment = TargetBuildEnvironment.Shared;
 		ExtraModuleNames.Add("Project_GAS_CC");
 	}
 }
