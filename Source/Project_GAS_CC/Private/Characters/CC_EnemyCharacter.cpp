@@ -1,13 +1,12 @@
 // Copyrights to Mahdi94x based on Course Make exciting multiplayer and single player games with the Gameplay Ability System in UE5 By Stephen Ulibarri
 
 #include "Characters/CC_EnemyCharacter.h"
-#include "AbilitySystemComponent.h"
+#include "AbilitySystem/CC_AbilitySystemComponent.h"
 
-// Sets default values
 ACC_EnemyCharacter::ACC_EnemyCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>("AbilitySystemComponent");
+	AbilitySystemComponent = CreateDefaultSubobject<UCC_AbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 }

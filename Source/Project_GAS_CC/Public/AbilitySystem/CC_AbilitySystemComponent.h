@@ -1,0 +1,21 @@
+// Copyrights to Mahdi94x based on Course Make exciting multiplayer and single player games with the Gameplay Ability System in UE5 By Stephen Ulibarri
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "AbilitySystemComponent.h"
+#include "CC_AbilitySystemComponent.generated.h"
+
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+class PROJECT_GAS_CC_API UCC_AbilitySystemComponent : public UAbilitySystemComponent
+{
+	GENERATED_BODY()
+
+public:
+	UCC_AbilitySystemComponent();
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
+		                           FActorComponentTickFunction* ThisTickFunction) override;
+protected:
+	virtual void BeginPlay() override;
+	
+};
