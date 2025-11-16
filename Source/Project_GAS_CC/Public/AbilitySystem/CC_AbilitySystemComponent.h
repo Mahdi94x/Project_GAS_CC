@@ -12,10 +12,9 @@ class PROJECT_GAS_CC_API UCC_AbilitySystemComponent : public UAbilitySystemCompo
 	GENERATED_BODY()
 
 public:
-	UCC_AbilitySystemComponent();
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
-		                           FActorComponentTickFunction* ThisTickFunction) override;
-protected:
-	virtual void BeginPlay() override;
+	virtual void OnGiveAbility(FGameplayAbilitySpec& AbilitySpec) override;
+	virtual void OnRep_ActivateAbilities() override;
 	
+private:
+	void HandleAutoActivatedAbilities(const FGameplayAbilitySpec& AbilitySpec);
 };

@@ -2,22 +2,38 @@
 
 #include "AbilitySystem/CC_AbilitySystemComponent.h"
 
-UCC_AbilitySystemComponent::UCC_AbilitySystemComponent()
-{
-	PrimaryComponentTick.bCanEverTick = true;
+#include "GameplayTags/CCTags.h"
 
-}
 
-void UCC_AbilitySystemComponent::BeginPlay()
+void UCC_AbilitySystemComponent::OnGiveAbility(FGameplayAbilitySpec& AbilitySpec)
 {
-	Super::BeginPlay();
+	Super::OnGiveAbility(AbilitySpec);
+	
+	HandleAutoActivatedAbilities(AbilitySpec);
 	
 }
 
-void UCC_AbilitySystemComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                               FActorComponentTickFunction* ThisTickFunction)
+void UCC_AbilitySystemComponent::OnRep_ActivateAbilities()
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
+	Super::OnRep_ActivateAbilities();
+	
+	FScopedAbilityListLock ActiveScopeLock(*this);
+	for ( FGameplayAbilitySpec AbilitySpec : GetActivatableAbilities())
+	{
+		HandleAutoActivatedAbilities(AbilitySpec);
+	}
 }
 
+void UCC_AbilitySystemComponent::HandleAutoActivatedAbilities(const FGameplayAbilitySpec& AbilitySpec)
+{
+	if (!IsValid(AbilitySpec.Ability)) return;
+	
+	for (const FGameplayTag& Tag : AbilitySpec.Ability->GetAssetTags())
+	{
+		if (Tag.MatchesTagExact(CCTags::CCAbilities::ActivateOnGiven))
+		{
+			TryActivateAbility(AbilitySpec.Handle);
+			return;
+		}
+	}
+}
