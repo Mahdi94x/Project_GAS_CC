@@ -72,17 +72,17 @@ void ACC_PlayerController::Look(const FInputActionValue& Value)
 
 void ACC_PlayerController::Primary()
 {
-	ActivateAbility(CCTags::CCAbilities::Primary);
+	ActivateAbility(CCTags::CCAbilities::Player::Primary);
 }
 
 void ACC_PlayerController::Secondary()
 {
-	ActivateAbility(CCTags::CCAbilities::Secondary);
+	ActivateAbility(CCTags::CCAbilities::Player::Secondary);
 }
 
 void ACC_PlayerController::Tertiary()
 {
-	ActivateAbility(CCTags::CCAbilities::Tertiary);
+	ActivateAbility(CCTags::CCAbilities::Player::Tertiary);
 }
 
 void ACC_PlayerController::ActivateAbility(const FGameplayTag& AbilityTag) const
