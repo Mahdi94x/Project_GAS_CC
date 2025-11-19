@@ -1,9 +1,12 @@
 // Copyrights to Mahdi94x based on Course Make exciting multiplayer and single player games with the Gameplay Ability System in UE5 By Stephen Ulibarri
 
 #include "AbilitySystem/Abilities/Player/CC_Primary.h"
-#include "Engine/OverlapResult.h"
 
-void UCC_Primary::HitBoxOverlapTest()
+#include "AbilitySystemBlueprintLibrary.h"
+#include "Engine/OverlapResult.h"
+#include "GameplayTags/CCTags.h"
+
+TArray<AActor*> UCC_Primary::HitBoxOverlapTest()
 {
 	TArray<AActor*> ActorsToIgnore;
 	ActorsToIgnore.AddUnique(GetAvatarActorFromActorInfo());
@@ -33,22 +36,43 @@ void UCC_Primary::HitBoxOverlapTest()
 		ResponseParams
 		);
 	
+	TArray<AActor*> ActorsHit;
+	for (const FOverlapResult& Result : OverlapResults)
+	{
+		if (!IsValid(Result.GetActor())) continue;
+		
+		ActorsHit.AddUnique(Result.GetActor());
+	}
 	
 	if (bDrawDebugs)
 	{
-		DrawDebugSphere(GetWorld(), HitboxLocation, HitBoxRadius, 16, FColor::Red, false, 5.f );
+		DrawHitBoxOverlapDebugs(OverlapResults, HitboxLocation);
+	}
+	return ActorsHit;
+}
+
+void UCC_Primary::SendHitReactEventsToActor(const TArray<AActor*>& ActorsHit)
+{
+	for (AActor* HitActor : ActorsHit)
+	{
+		FGameplayEventData Payload;
+		Payload.Instigator = GetAvatarActorFromActorInfo();
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(HitActor,CCTags::Events::Enemy::HitReact,Payload);
 		
-		for (const FOverlapResult& Result : OverlapResults)
+	}
+}
+
+void UCC_Primary::DrawHitBoxOverlapDebugs(const TArray<FOverlapResult>& OverlapResults, const FVector& HitBoxLocation)
+{
+	DrawDebugSphere(GetWorld(), HitBoxLocation, HitBoxRadius, 24, FColor::Red, false, 5.f );
+		
+	for (const FOverlapResult& Result : OverlapResults)
+	{
+		if (IsValid(Result.GetActor()))
 		{
-			if (IsValid(Result.GetActor()))
-			{
-				FVector DebugLocation = Result.GetActor()->GetActorLocation();
-				DebugLocation.Z+=100.f;
-				DrawDebugSphere(GetWorld(), DebugLocation, 30, 12, FColor::Green, false, 5.f );
-				
-			}
+			FVector DebugLocation = Result.GetActor()->GetActorLocation();
+			DebugLocation.Z+=100.f;
+			DrawDebugSphere(GetWorld(), DebugLocation, 30, 12, FColor::Green, false, 5.f );
 		}
 	}
-	
-	
 }
