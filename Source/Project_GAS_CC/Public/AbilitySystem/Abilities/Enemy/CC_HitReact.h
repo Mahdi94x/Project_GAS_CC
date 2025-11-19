@@ -10,4 +10,14 @@ UCLASS()
 class PROJECT_GAS_CC_API UCC_HitReact : public UCC_GameplayAbility
 {
 	GENERATED_BODY()
+	
+public:
+	UFUNCTION(BlueprintCallable)
+	void CacheHitDirectionVectors(AActor* Instigator);
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Crash|Abilities")
+	FVector AvatarForward;
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Crash|Abilities")
+	FVector ToInstigator;
 };

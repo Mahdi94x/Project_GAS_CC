@@ -9,7 +9,7 @@
 TArray<AActor*> UCC_Primary::HitBoxOverlapTest()
 {
 	TArray<AActor*> ActorsToIgnore;
-	ActorsToIgnore.AddUnique(GetAvatarActorFromActorInfo());
+	ActorsToIgnore.Add(GetAvatarActorFromActorInfo());
 	
 	// Ensure that the overlap test ignore the avatar actor
 	FCollisionQueryParams QueryParams;
@@ -53,6 +53,8 @@ TArray<AActor*> UCC_Primary::HitBoxOverlapTest()
 
 void UCC_Primary::SendHitReactEventsToActor(const TArray<AActor*>& ActorsHit)
 {
+	if (ActorsHit.Num() == 0) return;
+	
 	for (AActor* HitActor : ActorsHit)
 	{
 		FGameplayEventData Payload;
@@ -62,7 +64,7 @@ void UCC_Primary::SendHitReactEventsToActor(const TArray<AActor*>& ActorsHit)
 	}
 }
 
-void UCC_Primary::DrawHitBoxOverlapDebugs(const TArray<FOverlapResult>& OverlapResults, const FVector& HitBoxLocation)
+void UCC_Primary::DrawHitBoxOverlapDebugs(const TArray<FOverlapResult>& OverlapResults, const FVector& HitBoxLocation) const
 {
 	DrawDebugSphere(GetWorld(), HitBoxLocation, HitBoxRadius, 24, FColor::Red, false, 5.f );
 		

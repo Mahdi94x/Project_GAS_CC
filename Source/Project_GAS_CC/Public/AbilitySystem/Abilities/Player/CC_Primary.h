@@ -19,7 +19,7 @@ public:
 	void SendHitReactEventsToActor(const TArray<AActor*>& ActorsHit);
 	
 private:
-	void DrawHitBoxOverlapDebugs(const TArray<FOverlapResult>& OverlapResults , const FVector& HitBoxLocation);
+	void DrawHitBoxOverlapDebugs(const TArray<FOverlapResult>& OverlapResults , const FVector& HitBoxLocation) const;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Crash|Abilities")
 	float HitBoxRadius = 100.f;
