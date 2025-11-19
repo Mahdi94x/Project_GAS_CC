@@ -9,6 +9,5 @@ void UCC_HitReact::CacheHitDirectionVectors(AActor* Instigator)
 	const FVector AvatarLocation = GetAvatarActorFromActorInfo()->GetActorLocation();
 	const FVector InstigatorLocation = Instigator->GetActorLocation();
 	
-	ToInstigator = InstigatorLocation - AvatarLocation;
-	ToInstigator.Normalize();
+	ToInstigator = (InstigatorLocation - AvatarLocation).GetSafeNormal();
 }
