@@ -7,7 +7,9 @@
 #include "AbilitySystemInterface.h"
 #include "CC_PlayerState.generated.h"
 
+class UAttributeSet;
 class UAbilitySystemComponent;
+
 UCLASS()
 class PROJECT_GAS_CC_API ACC_PlayerState : public APlayerState, public IAbilitySystemInterface
 {
@@ -16,8 +18,12 @@ class PROJECT_GAS_CC_API ACC_PlayerState : public APlayerState, public IAbilityS
 public:
 	ACC_PlayerState();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	UAttributeSet* GetAttributeSet();
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Crash|Abilities")
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	
+	UPROPERTY() // not an actor component so no need to adjust visability
+	TObjectPtr<UAttributeSet> AttributeSet;
 };

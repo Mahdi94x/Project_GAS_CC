@@ -14,6 +14,7 @@ class PROJECT_GAS_CC_API ACC_EnemyCharacter : public ACC_BaseCharacter
 public:
 	ACC_EnemyCharacter();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	virtual UAttributeSet* GetAttributeSet() override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -21,6 +22,9 @@ protected:
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	
+	UPROPERTY()
+	TObjectPtr<UAttributeSet> AttributeSet;
 
 
 };

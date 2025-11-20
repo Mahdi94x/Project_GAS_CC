@@ -1,6 +1,5 @@
 // Copyrights to Mahdi94x based on Course Make exciting multiplayer and single player games with the Gameplay Ability System in UE5 By Stephen Ulibarri
 
-
 #include "Project_GAS_CC/Public/Characters/CC_PlayerCharacter.h"
 #include "AbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
@@ -8,7 +7,6 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Player/CC_PlayerState.h"
-
 
 ACC_PlayerCharacter::ACC_PlayerCharacter()
 {
@@ -64,6 +62,15 @@ void ACC_PlayerCharacter::OnRep_PlayerState() // Client (Local)
 	Super::OnRep_PlayerState();
 	if (!IsValid(GetAbilitySystemComponent())) return;
 	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
+}
+
+UAttributeSet* ACC_PlayerCharacter::GetAttributeSet()
+{
+	ACC_PlayerState* CCPlayerState = Cast<ACC_PlayerState>(GetPlayerState());
+	if (!IsValid(CCPlayerState)) return nullptr;
+	
+	return CCPlayerState->GetAttributeSet();
+	
 }
 
 
