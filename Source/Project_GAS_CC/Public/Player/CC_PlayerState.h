@@ -24,6 +24,6 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Crash|Abilities")
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 	
-	UPROPERTY() // not an actor component so no need to adjust visability
+	UPROPERTY() // not an actor component so no need to adjust visibility
 	TObjectPtr<UAttributeSet> AttributeSet;
 };
