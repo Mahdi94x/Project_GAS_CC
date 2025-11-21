@@ -18,7 +18,7 @@ class PROJECT_GAS_CC_API ACC_PlayerState : public APlayerState, public IAbilityS
 public:
 	ACC_PlayerState();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	UAttributeSet* GetAttributeSet();
+	UAttributeSet* GetAttributeSet() const;
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Crash|Abilities")

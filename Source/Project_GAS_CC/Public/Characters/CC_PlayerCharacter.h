@@ -19,7 +19,7 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
-	virtual UAttributeSet* GetAttributeSet() override;
+	virtual UAttributeSet* GetAttributeSet() const override;
 
 private:
 	

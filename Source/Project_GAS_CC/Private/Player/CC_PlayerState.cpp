@@ -20,7 +20,7 @@ UAbilitySystemComponent* ACC_PlayerState::GetAbilitySystemComponent() const
 	return this->AbilitySystemComponent;
 }
 
-UAttributeSet* ACC_PlayerState::GetAttributeSet()
+UAttributeSet* ACC_PlayerState::GetAttributeSet() const
 {
 	return this->AttributeSet;
 }

@@ -11,6 +11,8 @@ class UGameplayEffect;
 class UAttributeSet;
 class UGameplayAbility;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FASCInitialized, UAbilitySystemComponent*, ASC, UAttributeSet*, AS);
+
 UCLASS(Abstract)
 class PROJECT_GAS_CC_API ACC_BaseCharacter : public ACharacter , public IAbilitySystemInterface
 {
@@ -19,7 +21,10 @@ class PROJECT_GAS_CC_API ACC_BaseCharacter : public ACharacter , public IAbility
 public:
 	ACC_BaseCharacter();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	virtual UAttributeSet* GetAttributeSet() {return nullptr;}
+	virtual UAttributeSet* GetAttributeSet() const {return nullptr;}
+	
+	UPROPERTY(BlueprintAssignable)
+	FASCInitialized OnASCInitialized;
 
 protected:
 	void GiveStartUpAbilities();
