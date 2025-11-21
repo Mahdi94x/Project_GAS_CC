@@ -15,8 +15,9 @@ void UCC_WidgetComponent::BeginPlay()
 	if (!IsASCInitialized())
 	{
 		CrashCharacter->OnASCInitialized.AddDynamic(this, &ThisClass::OnASCInitialized);
+		return;
 	}
-	
+	InitializeAttributeDelegate();
 }
 
 void UCC_WidgetComponent::InitAbilitySystemData()
@@ -36,8 +37,26 @@ void UCC_WidgetComponent::OnASCInitialized(UAbilitySystemComponent* ASC, UAttrib
 	AttributeSet = Cast<UCC_AttributeSet>(AS);
 	AbilitySystemComponent = Cast<UCC_AbilitySystemComponent>(ASC);
 	
-	// TODO: check if the attribute set has been initialized with the gameplay effect 
-	// and if not bind to some delegate that will be broadcasted when it is initialized
+	if (!IsASCInitialized()) return;
+	InitializeAttributeDelegate();
+}
+
+void UCC_WidgetComponent::InitializeAttributeDelegate()
+{
+	if (!AttributeSet->bAttributeInitialized)
+	{
+		AttributeSet->OnAttributeInitialized.AddDynamic(this, &ThisClass::BindToAttributeChanged);
+	}
+	else
+	{
+		BindToAttributeChanged();
+	}
+}
+
+void UCC_WidgetComponent::BindToAttributeChanged()
+{
+	// TODO: Listen for changed to gameplay attributes and update our widget accordingly
+	
 }
 
 

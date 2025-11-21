@@ -13,6 +13,8 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAttributeInitialized);
+
 UCLASS()
 class PROJECT_GAS_CC_API UCC_AttributeSet : public UAttributeSet
 {
@@ -20,6 +22,16 @@ class PROJECT_GAS_CC_API UCC_AttributeSet : public UAttributeSet
 	
 public:
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+	
+	UPROPERTY(ReplicatedUsing = OnRep_AttributeInitialized)
+	bool bAttributeInitialized = false;
+	
+	UFUNCTION()
+	void OnRep_AttributeInitialized();
+	
+	UPROPERTY(BlueprintAssignable)
+	FAttributeInitialized OnAttributeInitialized;
 	
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldValue);

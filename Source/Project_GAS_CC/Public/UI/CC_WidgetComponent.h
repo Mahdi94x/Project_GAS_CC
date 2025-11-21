@@ -25,10 +25,16 @@ protected:
 	
 private:
 	void InitAbilitySystemData();
+	
 	bool IsASCInitialized() const;
 	
 	UFUNCTION()
 	void OnASCInitialized(UAbilitySystemComponent* ASC , UAttributeSet* AS );
+	
+	void InitializeAttributeDelegate();
+	
+	UFUNCTION()
+	void BindToAttributeChanged();
 	
 	TWeakObjectPtr<ACC_BaseCharacter> CrashCharacter;
 	TWeakObjectPtr<UCC_AbilitySystemComponent> AbilitySystemComponent;
