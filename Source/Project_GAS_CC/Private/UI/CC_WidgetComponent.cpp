@@ -1,10 +1,11 @@
 // Copyrights to Mahdi94x based on Course Make exciting multiplayer and single player games with the Gameplay Ability System in UE5 By Stephen Ulibarri
 
 #include "UI/CC_WidgetComponent.h"
-
 #include "AbilitySystem/CC_AbilitySystemComponent.h"
 #include "AbilitySystem/CC_AttributeSet.h"
+#include "Blueprint/WidgetTree.h"
 #include "Characters/CC_BaseCharacter.h"
+#include "UI/CC_AttributeWidget.h"
 
 void UCC_WidgetComponent::BeginPlay()
 {
@@ -55,9 +56,37 @@ void UCC_WidgetComponent::InitializeAttributeDelegate()
 
 void UCC_WidgetComponent::BindToAttributeChanged()
 {
-	// TODO: Listen for changed to gameplay attributes and update our widget accordingly
-	
+	for (const TTuple<FGameplayAttribute, FGameplayAttribute>& Pair : AttributeMap)
+	{
+		BindWidgetToAttributeChanged(GetUserWidgetObject(), Pair);
+		
+		GetUserWidgetObject()->WidgetTree->ForEachWidget([this, &Pair](UWidget* ChildWidget)
+		{
+			BindWidgetToAttributeChanged(ChildWidget, Pair);
+		});
+	}
 }
+
+void UCC_WidgetComponent::BindWidgetToAttributeChanged(UWidget* WidgetObject,
+	const TTuple<FGameplayAttribute, FGameplayAttribute>& Pair) const
+{
+	UCC_AttributeWidget* AttributeWidget = Cast<UCC_AttributeWidget>(WidgetObject);
+		
+	if (!IsValid(AttributeWidget)) return; // Only care about CC_Attribute_Widget
+	if (!AttributeWidget->MatchesAttributes(Pair)) return; // Only subscribe for matching attributes this->TMap vs TTuple
+		
+	AttributeWidget->OnAttributeChange(Pair, AttributeSet.Get()); // Setting Initial Values
+	
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Key).AddLambda
+	([this,AttributeWidget, &Pair](const FOnAttributeChangeData& AttributeChangeData)
+	{
+		AttributeWidget->OnAttributeChange(Pair, AttributeSet.Get()); // Updating during gameplay
+	});
+}
+
+
+
+
 
 
 
