@@ -22,7 +22,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category= "Crash|UI")
 	TMap<FGameplayAttribute, FGameplayAttribute> AttributeMap;
 	
 private:
