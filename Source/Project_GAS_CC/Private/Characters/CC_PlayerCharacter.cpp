@@ -2,6 +2,7 @@
 
 #include "Project_GAS_CC/Public/Characters/CC_PlayerCharacter.h"
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/CC_AttributeSet.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -56,20 +57,35 @@ void ACC_PlayerCharacter::PossessedBy(AController* NewController) // Server
 	OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
 	GiveStartUpAbilities();
 	InitializeAttributes();
+	const UCC_AttributeSet* CC_AttributeSet = Cast<UCC_AttributeSet>(GetAttributeSet());
+	if (!IsValid(CC_AttributeSet)) return;
+	
+	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(CC_AttributeSet->GetHealthAttribute())
+		.AddUObject(this, &ThisClass::OnHealthChanged);
 	
 }
 
 void ACC_PlayerCharacter::OnRep_PlayerState() // Client (Local)
 {
 	Super::OnRep_PlayerState();
+	
 	if (!IsValid(GetAbilitySystemComponent())) return;
+	
 	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
+	
 	OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
+	
+	const UCC_AttributeSet* CC_AttributeSet = Cast<UCC_AttributeSet>(GetAttributeSet());
+	if (!IsValid(CC_AttributeSet)) return;
+	
+	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(CC_AttributeSet->GetHealthAttribute())
+		.AddUObject(this, &ThisClass::OnHealthChanged);
+	
 }
 
 UAttributeSet* ACC_PlayerCharacter::GetAttributeSet() const
 {
-	ACC_PlayerState* CCPlayerState = Cast<ACC_PlayerState>(GetPlayerState());
+	const ACC_PlayerState* CCPlayerState = Cast<ACC_PlayerState>(GetPlayerState());
 	if (!IsValid(CCPlayerState)) return nullptr;
 	
 	return CCPlayerState->GetAttributeSet();

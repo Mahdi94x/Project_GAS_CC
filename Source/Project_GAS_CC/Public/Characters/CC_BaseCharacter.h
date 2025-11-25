@@ -7,6 +7,7 @@
 #include "AbilitySystemInterface.h"
 #include "CC_BaseCharacter.generated.h"
 
+struct FOnAttributeChangeData;
 class UGameplayEffect;
 class UAttributeSet;
 class UGameplayAbility;
@@ -20,8 +21,14 @@ class PROJECT_GAS_CC_API ACC_BaseCharacter : public ACharacter , public IAbility
 
 public:
 	ACC_BaseCharacter();
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual UAttributeSet* GetAttributeSet() const {return nullptr;}
+	bool IsAlive() const {return bAlive;}
+	void SetAlive(bool bAliveStatus) {bAlive = bAliveStatus;}
+	
+	UFUNCTION(BlueprintCallable, Category = "Crash|Death")
+	virtual void HandleRespawn();
 	
 	UPROPERTY(BlueprintAssignable)
 	FASCInitialized OnASCInitialized;
@@ -29,6 +36,10 @@ public:
 protected:
 	void GiveStartUpAbilities();
 	void InitializeAttributes() const;
+	void OnHealthChanged(const FOnAttributeChangeData& AttributeChangeData);
+	
+	UFUNCTION(Category = "Crash|Death")
+	virtual void HandleDeath();
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Crash|Abilities")
@@ -36,5 +47,8 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Crash|Effects")
 	TSubclassOf<UGameplayEffect> InitializeAttributeEffect;
+	
+	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Replicated, Category = "Crash|Death", VisibleAnywhere)
+	bool bAlive = true;
 
 };
